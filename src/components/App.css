@@ -1,0 +1,29 @@
+.text-center {
+    text-align: center;
+}
+.text-break {
+    word-break: break-all;
+}
+
+.banner {
+    width: 100%;
+    background-color:#333;
+    color:white;
+}
+
+.banner > .content {
+    padding:2% 0 2% 10% 
+}
+
+
+.article-taglist-ul{
+    list-style: none;
+    padding-left: 0px;
+}
+
+.article-taglist-li {
+    border: 1px solid;
+    display: inline;
+    border-radius: 7px;
+    padding: 4px;
+}
