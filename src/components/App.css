@@ -38,3 +38,36 @@
     border-color: green;
     color: green;
 }
+
+.article-body{
+    margin-top:5%;
+}
+
+.article-details {
+    margin-left: 30%;
+}
+
+.comments-article-section {
+    margin-top:5%;
+    text-align: center;
+}
+.comments-section {
+    margin-left:10%;
+    margin-right:10%;
+}
+
+.div-inline {
+    display:inline;
+}
+.comment-border {
+    border:1px solid #333!important;
+    margin-top:1%;
+    border-radius: 3px;
+}
+
+.display-right{
+    float:right;
+}
+.color-grey {
+    color:#333;
+}
