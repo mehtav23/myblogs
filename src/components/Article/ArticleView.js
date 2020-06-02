@@ -6,9 +6,26 @@ class ArticleView extends React.Component {
 
     componentDidMount() {
         const id = this.props.match.params.id;
-        // this.setState({slug: id});
         this.props.fetchArticleBySlug(id);
         
+    }
+    displayButton(articleUser) {
+        if(this.props.user){
+            const {user} = this.props.user;
+            if(articleUser === user.username) {
+                return (
+                    <ul className="ui floated left article-taglist-ul">
+                        <li className="article-taglist-li success">
+                            <i className="edit icon"></i>&nbsp; Edit Article
+                        </li>
+                        <li className="article-taglist-li danger">
+                            <i className="trash icon"></i>&nbsp; Delete Article
+                        </li>
+                    </ul>
+                )
+            }
+        }
+
     }
     getHeaderSection() {
         if(this.props.article && ! this.props.isloading && !this.props.failedMessgae) {
@@ -19,7 +36,7 @@ class ArticleView extends React.Component {
                 body= article.body,
                 tags= article.tagList,
                 imgSrc = article.author.image
-
+            const userButton = this.displayButton(userName);
             return (
                 <React.Fragment>
                     <div className="banner">    
@@ -34,24 +51,7 @@ class ArticleView extends React.Component {
                                 {date}
                             </div>
                             <div>
-                            <ul className="ui floated left article-taglist-ul">
-                                
-                                <li className="article-taglist-li">
-                                    <i className="plus icon"></i>Follow {userName}
-                                </li>
-                                &nbsp;
-                                <li className="article-taglist-li">
-                                    <i className="heart icon"></i>&nbsp; Favourite
-                                </li>
-                                &nbsp;
-                                <li className="article-taglist-li">
-                                    <i className="edit icon"></i>&nbsp; Edit Article
-                                </li>
-                                &nbsp;
-                                <li className="article-taglist-li" >
-                                    <i className="trash icon"></i>&nbsp; Delete Article
-                                </li>
-                            </ul>
+                            {userButton}
                             </div>
                         </div>
                         
@@ -66,7 +66,7 @@ class ArticleView extends React.Component {
                             </div>
                             <br/>
                             <ul className="article-taglist-ul">
-                                {tags?tags.map(tag=><li className="article-taglist-li">{tag}</li>):''}
+                                {tags?tags.map(tag=><li className="article-taglist-li" key={tag}>{tag}</li>):''}
                             </ul>
                         </div>
                     </div>
@@ -99,6 +99,7 @@ const mapStateToProps = (state)=>{
         article: state.articles.fetchedDetailedArticle,
         isloading: state.articles.fetchingDetailedArticle,
         failedMessgae: state.articles.fetchedDetailedArticleFailed,
+        user: state.auth.user
     }
 }
 
