@@ -45,8 +45,10 @@ class ArticleList extends React.Component {
     }
 
     fetchMyFeed =()=>{
-        this.setState({activePage:1, globalFeed:false, myFeed:true});
+       
         this.props.fetchMyArticles();
+        this.setState({activePage:1, globalFeed:false, myFeed:true});
+        //this.forceUpdate()
     }
 
     handleBlankSection = (articles) => {
@@ -109,8 +111,8 @@ class ArticleList extends React.Component {
                     <div className="ui one cards">
                         { rows }
                     </div>
-                    <div className="text-center">
-                    <Pagination defaultActivePage={this.state.activePage} totalPages={50}  onPageChange={this.handlePageChange}/>
+                    <div className="text-center pagination">
+                    <Pagination activePage={this.state.activePage} totalPages={50}  onPageChange={this.handlePageChange}/>
                     </div>
                 </div>
                 <div className="four wide column">
