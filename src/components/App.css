@@ -71,3 +71,7 @@
 .color-grey {
     color:#333;
 }
+
+.mouse-pointer {
+    cursor: pointer;
+}

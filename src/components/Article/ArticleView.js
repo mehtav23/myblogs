@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchArticleBySlug, addCommentToArticle, clearFetchingComments, clearAddingComment, deleteComment } from '../../actions';
+import { fetchArticleBySlug, addCommentToArticle, clearFetchingComments,
+         clearAddingComment, deleteComment, deleteArticle } from '../../actions';
 
 class ArticleView extends React.Component {
 
@@ -21,6 +22,13 @@ class ArticleView extends React.Component {
         this.props.fetchArticleBySlug(id);
         
     }
+
+    deleteArticle= (event)=> {
+        event.preventDefault();
+        const articleId = this.state.slug;
+        this.props.deleteArticle(articleId);
+
+    }
     displayButton = (articleUser) => {
         if(this.props.user){
             const {user} = this.props.user;
@@ -30,7 +38,7 @@ class ArticleView extends React.Component {
                         <li className="article-taglist-li success">
                             <i className="edit icon"></i>&nbsp; Edit Article
                         </li>
-                        <li className="article-taglist-li danger">
+                        <li className="article-taglist-li danger" onClick={this.deleteArticle}>
                             <i className="trash icon"></i>&nbsp; Delete Article
                         </li>
                     </ul>
@@ -67,7 +75,7 @@ class ArticleView extends React.Component {
                         <a href={() => false} className="ui avatar image">
                         <img src={comment.author.image} className="ui image" alt= 'na'/>
                         </a>
-                        <a href={() => false} className="display-right">
+                        <a href={() => false} className="display-right mouse-pointer">
                             {this.renderDeleteCommentButton(loggedInUsername, comment.author.username, comment.id)}
                         </a>
                         <div className="content">
@@ -93,6 +101,7 @@ class ArticleView extends React.Component {
     }
 
     handleDeleteCommentNotification=()=> {
+        console.log('calling');
         if(this.props.deletingComment){
             return (
                 <div>Deleting Commment.....</div>
@@ -230,12 +239,16 @@ const mapStateToProps = (state)=>{
         fetchedCommentofArticle: state.articles.fetchedCommentofArticle,
         deletingComment: state.articles.deleteComment,
         deletingCommentSuccessfully: state.articles.deletingCommentSuccessfully,
-        deletingCommentFailed: state.articles.deletingCommentFailed
+        deletingCommentFailed: state.articles.deletingCommentFailed,
+        deletingArticle: state.articles.deletingArticle,
+        deletingArticleSuccessfully: state.articles.deletingArticleSuccessfully,
+        deletingArticleFailed: state.articles.deletingArticleFailed
     }
 }
 
 const action = {
-        fetchArticleBySlug, addCommentToArticle, clearFetchingComments, clearAddingComment, deleteComment
+        fetchArticleBySlug, addCommentToArticle, clearFetchingComments,
+        clearAddingComment, deleteComment, deleteArticle
 } 
 
 

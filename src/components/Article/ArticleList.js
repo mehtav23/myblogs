@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { fetchArticles, fetchMyArticles } from '../../actions';
 import { Link } from 'react-router-dom';
+import {Pagination} from 'semantic-ui-react';
 
 
 class ArticleList extends React.Component {
@@ -39,12 +40,12 @@ class ArticleList extends React.Component {
     }
 
     fetchGlobalFeed=()=>{
-        this.setState({globalFeed:true, myFeed:false});
+        this.setState({activePage:1, globalFeed:true, myFeed:false});
         this.props.fetchArticles();
     }
 
     fetchMyFeed =()=>{
-        this.setState({globalFeed:false, myFeed:true});
+        this.setState({activePage:1, globalFeed:false, myFeed:true});
         this.props.fetchMyArticles();
     }
 
@@ -55,8 +56,14 @@ class ArticleList extends React.Component {
             )
         }
     }
-    handlePageChange = () => {
-
+    handlePageChange = (event, data) => {
+        console.log(event, data);
+        const offset = (data.activePage-1)*10;
+        if(this.state.globalFeed) {
+            this.props.fetchArticles(offset);
+        }else {
+            this.props.fetchMyArticles(offset);
+        }
     }
 
     render() {
@@ -102,14 +109,20 @@ class ArticleList extends React.Component {
                     <div className="ui one cards">
                         { rows }
                     </div>
+                    <div className="text-center">
+                    <Pagination defaultActivePage={this.state.activePage} totalPages={50}  onPageChange={this.handlePageChange}/>
+                    </div>
                 </div>
                 <div className="four wide column">
                     <div className="ui secondary pointing menu">
                         <Link to="" className="item">Tags</Link>                
                     </div>
                 </div>
+
+                
             
             </div>
+            
         )
         
     }

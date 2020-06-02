@@ -6,12 +6,12 @@ import { FETCHING_ARTICLES, FETCHING_ARTICLES_SUCCESS, FETCHING_ARTICLES_FAILED,
         ADDING_COMMENT_TO_ARTICLE_FAILED, CLEAR_ADDING_COMMENT_TO_ARTICLE,
         FETCHING_COMMENT_OF_ARTICLE, FETCHING_COMMENT_OF_ARTICLE_SUCCESS, FETCHING_COMMENT_OF_ARTICLE_FAILED,
         CLEAR_FETCHING_COMMENT_OF_ARTICLE, DELETING_COMMENT, DELETING_COMMENT_SUCCESS, DELETING_COMMENT_FAILED,
-        CLEAR_DELETING_COMMENT} from './types';
+        CLEAR_DELETING_COMMENT, DELETING_ARTICLE, DELETING_ARTICLE_SUCCESS, DELETING_ARTICLE_FAILED,
+        CLEAR_DELETING_ARTICLE} from './types';
 
 import axios from '../apis';
 import getAuthHeader from './headerToken';
-
-import {} from '../history';
+import createBrowserHistory from '../history';
 
 
 
@@ -148,7 +148,9 @@ export const deleteComment = (slug, key) => {
             console.log(response.data);
             dispatch({type: DELETING_COMMENT_SUCCESS});
             dispatch(fetchCommentsOfArticle(slug));
-            dispatch(clearDeletingComment());
+            setTimeout(()=>{
+                dispatch(clearDeletingComment());
+            },2000);
         }catch(error) {
             console.log('Error while deleting comment', error);
             dispatch({type: DELETING_COMMENT_FAILED, payload: error});
@@ -160,5 +162,28 @@ export const deleteComment = (slug, key) => {
 export const clearDeletingComment = () => {
     return {
         type: CLEAR_DELETING_COMMENT
+    }
+}
+
+export const deleteArticle = (slug)=> {
+    return async(dispatch) => {
+        dispatch({type:DELETING_ARTICLE});
+        try{
+            const headers = getAuthHeader();
+            const response = await axios.delete(`/articles/${slug}`, {headers: headers});
+            console.log('Deleted article', response.data);
+            dispatch({type: DELETING_ARTICLE_SUCCESS, payload:  response.data});
+            createBrowserHistory.push('/');
+            dispatch({type: CLEAR_DELETING_ARTICLE});
+        }catch(error){
+            console.log('error occured', error);
+            dispatch({type: DELETING_ARTICLE_FAILED, payload: error});
+        }
+    }
+}
+
+export const clearDeletingArticle = () => {
+    return {
+        type: CLEAR_DELETING_ARTICLE
     }
 }

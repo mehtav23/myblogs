@@ -6,7 +6,8 @@ import { FETCHING_ARTICLES, FETCHING_ARTICLES_SUCCESS, FETCHING_ARTICLES_FAILED,
          ADDING_COMMENT_TO_ARTICLE_FAILED, CLEAR_ADDING_COMMENT_TO_ARTICLE,
          FETCHING_COMMENT_OF_ARTICLE, FETCHING_COMMENT_OF_ARTICLE_SUCCESS, FETCHING_COMMENT_OF_ARTICLE_FAILED,
          CLEAR_FETCHING_COMMENT_OF_ARTICLE, DELETING_COMMENT, DELETING_COMMENT_SUCCESS, DELETING_COMMENT_FAILED,
-         CLEAR_DELETING_COMMENT } from '../actions/types';
+         CLEAR_DELETING_COMMENT,  DELETING_ARTICLE, DELETING_ARTICLE_SUCCESS, DELETING_ARTICLE_FAILED,
+         CLEAR_DELETING_ARTICLE } from '../actions/types';
 
 const initialState = {
     feedArticles: [],
@@ -35,7 +36,12 @@ const initialState = {
 
     deletingComment: false,
     deletingCommentSuccessfully: false,
-    deletingCommentFailed: false
+    deletingCommentFailed: false,
+
+
+    deletingArticle: false,
+    deletingArticleSuccessfully: false,
+    deletingArticleFailed: false
 
 };
 
@@ -99,6 +105,14 @@ export default (state = initialState, action) =>{
             return  {...state, deletingComment: false, deletingCommentSuccessfully: false, deletingCommentFailed: true}
         case CLEAR_DELETING_COMMENT:
             return  {...state, deletingComment: false, deletingCommentSuccessfully: false, deletingCommentFailed: false}
+        case DELETING_ARTICLE:
+            return  {...state, deletingArticle:true, deletingArticleSuccessfully:false, deletingArticleFailed:false}
+        case DELETING_ARTICLE_SUCCESS:
+            return {...state, deletingArticle:false, deletingArticleSuccessfully:true, deletingArticleFailed:false}
+        case DELETING_ARTICLE_FAILED:
+            return {...state, deletingArticle:false, deletingArticleSuccessfully:false, deletingArticleFailed:true}
+        case CLEAR_DELETING_ARTICLE:
+            return {...state, deletingArticle:false, deletingArticleSuccessfully:false, deletingArticleFailed:false}
         default:
             return state;
     }
