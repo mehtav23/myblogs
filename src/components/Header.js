@@ -7,6 +7,7 @@ class Header extends React.Component {
 
     signOut = () =>{
         this.props.signOut();
+        window.location.reload();
     }
     componentDidMount(){
         this.props.getCurrentUser();

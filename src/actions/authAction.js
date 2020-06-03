@@ -42,7 +42,9 @@ export const getCurrentUser = () =>{
 
 
 export const signOut = () => {
+    createBrowserHistory.push('/');
     return {
         type: SIGN_OUT,
     }
+    
 }
