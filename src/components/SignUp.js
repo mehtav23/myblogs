@@ -26,6 +26,17 @@ class SignUp extends React.Component {
     onSubmit = (event)=> {
         event.preventDefault();
         this.props.signUp(this.state);
+        this.setState({userName: '', email: '', password: ''});
+    }
+
+    showErrors = () => {
+        if(this.props.errorMessage) {
+            return (
+                <p className='text-center'>
+                    {this.props.errorMessage}
+                </p>
+            );
+        }
     }
 
     registering () {
@@ -43,23 +54,25 @@ class SignUp extends React.Component {
     }
 
     render() {
+        const errors = this.showErrors();
+        const registering = this.registering();
         return (
         <div className="ui grid container">
             <div className="four wide column"></div>
             <div className="eight wide column">
                 <h1 className="text-center">Sign Up</h1>
-                
-                {this.registering()}
+                {errors}
+                {registering}
                 
                 <form className="ui form" onSubmit={this.onSubmit}>
                     <div className="field">
-                        <input name="userName" placeholder="Username" onChange={this.handleChange}/>
+                        <input name="userName" value={this.state.userName} type="text" placeholder="Username" onChange={this.handleChange} required/>
                     </div>
                     <div className="field">
-                        <input name="email" type="email" placeholder="Email" onChange={this.handleChange}/>
+                        <input name="email" value={this.state.email} type="email" placeholder="Email" onChange={this.handleChange} required/>
                     </div>
                     <div className="field">
-                        <input name="password" type="password" placeholder="Password" onChange={this.handleChange}/>
+                        <input name="password" value={this.state.password} minLength="8" type="password" placeholder="Password" onChange={this.handleChange} required/>
                     </div>
                     <div className="field">
                         <button className="ui right floated green button">Sign Up</button>
@@ -77,7 +90,8 @@ class SignUp extends React.Component {
 const mapStateToProps = (state) => {
     return {
         isRegistering: state.register.isRegistering,
-        userName: state.register.userName
+        userName: state.register.userName,
+        errorMessage: state.register.errorMessage
     }
 }
 
