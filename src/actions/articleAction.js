@@ -1,5 +1,5 @@
-import { FETCHING_ARTICLES, FETCHING_ARTICLES_SUCCESS, FETCHING_ARTICLES_FAILED,
-        FETCHING_MY_ARTICLES, FETCHING_MY_ARTICLES_SUCCESS, FETCHING_MY_ARTICLES_FAILED,
+import { FETCHING_ARTICLES, FETCHING_ARTICLES_SUCCESS, FETCHING_ARTICLES_FAILED, CLEAR_FETCHING_ARTICLES,
+        FETCHING_MY_ARTICLES, FETCHING_MY_ARTICLES_SUCCESS, FETCHING_MY_ARTICLES_FAILED, CLEAR_FETCHING_MY_ARTICLES,
         CREATING_ARTICLE, CREATING_ARTICLE_SUCCESS, CREATING_ARTICLE_FAILED,
         CLEAR_CREATING_ARTICLE, FETCHING_ARTICLE_DETAILS, FETCHING_ARTICLE_DETAILS_SUCCESS, FETCHING_ARTICLE_DETAILS_FAILED,
         CLEARING_FETCHING_ARTICLE_DETAILS, ADDING_COMMENT_TO_ARTICLE, ADDING_COMMENT_TO_ARTICLE_SUCCESS,
@@ -20,6 +20,9 @@ export const fetchArticles = (offset) =>{
     return async (dispatch) => {
         try {
             dispatch({type: FETCHING_ARTICLES});
+            if(offset===0){
+                dispatch({type: CLEAR_FETCHING_ARTICLES});
+            }
             const response = await axios.get(`/articles?limit=10&offset=${offset?offset:0}`);
             console.log('Articles data',response.data);
             dispatch({type: FETCHING_ARTICLES_SUCCESS, payload: response.data});
@@ -34,6 +37,9 @@ export const fetchMyArticles = (offset) => {
     return async (dispatch, getState) => {
         try{
             dispatch({type:FETCHING_MY_ARTICLES});
+            if(offset===0){
+                dispatch({type: CLEAR_FETCHING_MY_ARTICLES});
+            }
             const {user} = getState().auth.user;
             const userName = user.username;
             const response = await axios.get(`/articles?limit=10&offset=${offset?offset:0}&author=${userName}`);

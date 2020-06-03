@@ -1,5 +1,5 @@
-import { FETCHING_ARTICLES, FETCHING_ARTICLES_SUCCESS, FETCHING_ARTICLES_FAILED,
-         FETCHING_MY_ARTICLES, FETCHING_MY_ARTICLES_SUCCESS, FETCHING_MY_ARTICLES_FAILED,
+import { FETCHING_ARTICLES, FETCHING_ARTICLES_SUCCESS, FETCHING_ARTICLES_FAILED, CLEAR_FETCHING_ARTICLES,
+         FETCHING_MY_ARTICLES, FETCHING_MY_ARTICLES_SUCCESS, FETCHING_MY_ARTICLES_FAILED, CLEAR_FETCHING_MY_ARTICLES,
          CREATING_ARTICLE, CREATING_ARTICLE_SUCCESS, CREATING_ARTICLE_FAILED, CLEAR_CREATING_ARTICLE,
          FETCHING_ARTICLE_DETAILS, FETCHING_ARTICLE_DETAILS_SUCCESS, FETCHING_ARTICLE_DETAILS_FAILED,
          CLEARING_FETCHING_ARTICLE_DETAILS, ADDING_COMMENT_TO_ARTICLE, ADDING_COMMENT_TO_ARTICLE_SUCCESS,
@@ -12,7 +12,8 @@ import { FETCHING_ARTICLES, FETCHING_ARTICLES_SUCCESS, FETCHING_ARTICLES_FAILED,
 const initialState = {
     feedArticles: [],
     myArticles: [],
-    
+    feedArticlesTotalCount: 10,
+    myArticlesTotalCount: 10,
     fetchingArticles: false,
     fetchingMyArticles: false,
     errorMessage: null,
@@ -51,15 +52,19 @@ export default (state = initialState, action) =>{
         case FETCHING_ARTICLES:
             return {...state, fetchingArticles:true, feedArticles: [], errorMessage: null};
         case FETCHING_ARTICLES_SUCCESS:
-            return {...state, fetchingArticles:false, feedArticles: action.payload.articles, errorMessage: null};
+            return {...state, fetchingArticles:false, feedArticles: action.payload.articles, errorMessage: null, feedArticlesTotalCount: action.payload.articlesCount};
         case FETCHING_ARTICLES_FAILED:
-            return {...state, fetchingArticles:false, feedArticles: [], errorMessage: action.payload};
+            return {...state, fetchingArticles:false, feedArticles: [], errorMessage: action.payload, feedArticlesTotalCount: 10};
+        case CLEAR_FETCHING_ARTICLES:
+            return {...state, feedArticlesTotalCount:10}
         case FETCHING_MY_ARTICLES:
             return{...state, fetchingMyArticles:true, myArticles:[], errorMessage: null};
         case FETCHING_MY_ARTICLES_SUCCESS:
-            return {...state, fetchingMyArticles: false, myArticles: action.payload.articles, errorMessage: null};
+            return {...state, fetchingMyArticles: false, myArticles: action.payload.articles, errorMessage: null, myArticlesTotalCount: action.payload.articlesCount};
         case FETCHING_MY_ARTICLES_FAILED:
-            return {...state, fetchingMyArticles: false, myArticles: [], errorMessage: action.payload};
+            return {...state, fetchingMyArticles: false, myArticles: [], errorMessage: action.payload, myArticlesTotalCount: 10};
+        case CLEAR_FETCHING_MY_ARTICLES:
+            return {...state, myArticlesTotalCount:10};
         case CREATING_ARTICLE:
             return {...state, creatingArticle:true, createdArticle: null, creatingArticleFailed: null };
         case CREATING_ARTICLE_SUCCESS:

@@ -18,6 +18,14 @@ class ArticleList extends React.Component {
     componentDidMount() {
         this.props.fetchArticles(0);
     }
+
+    // getSnapshotBeforeUpdate() {
+    //     if(this.state.globalFeed) {
+    //         this.setState({totalCount: this.props.feedArticlesTotalCount});
+    //     }else {
+    //         this.setState({totalCount: this.props.myArticlesTotalCount});
+    //     }
+    // }
     formatDate =(date)=>{
         if(date){
             return new Date(date).toLocaleDateString();
@@ -27,7 +35,7 @@ class ArticleList extends React.Component {
         if(this.props.isSignedIn){
             const classes = this.state.myFeed?"item active":"item";
             return (
-                <Link to="" className={classes} onClick={this.fetchMyFeed}>My Feed</Link>
+                <Link to="" className={classes} onClick={this.fetchMyFeed}>My Articles</Link>
             );
         }
     }
@@ -48,7 +56,8 @@ class ArticleList extends React.Component {
        
         this.props.fetchMyArticles();
         this.setState({activePage:1, globalFeed:false, myFeed:true});
-        //this.forceUpdate()
+        this.forceUpdate();
+
     }
 
     handleBlankSection = (articles) => {
@@ -71,9 +80,13 @@ class ArticleList extends React.Component {
     render() {
         const articles = this.state.globalFeed ? this.props.feedArticles: this.props.myArticles;
         const blankSection = this.handleBlankSection(articles);
+        const activePage = this.state.activePage;
+        let totalCount = this.state.globalFeed? this.props.feedArticlesCount: this.props.myArticlesCount;
+        totalCount = totalCount/10?totalCount/10:1;
         const rows = articles.map(article =>{
         const image = this.handleImage(article);
         const articleDate = this.formatDate(article.createdAt);
+        
             return (
                 <div className="card" key={article.slug} >
                     <div className="content">
@@ -112,7 +125,9 @@ class ArticleList extends React.Component {
                         { rows }
                     </div>
                     <div className="text-center pagination">
-                    <Pagination activePage={this.state.activePage} totalPages={50}  onPageChange={this.handlePageChange}/>
+                    <Pagination activePage={activePage} 
+                                totalPages={totalCount}
+                                onPageChange={this.handlePageChange}/>
                     </div>
                 </div>
                 <div className="four wide column">
@@ -133,7 +148,9 @@ class ArticleList extends React.Component {
 const mapStateToProps = (state) => {
     return {
         feedArticles: state.articles.feedArticles,
+        feedArticlesCount: state.articles.feedArticlesTotalCount,
         myArticles: state.articles.myArticles,
+        myArticlesCount: state.articles.myArticlesTotalCount,
         errorMessage: state.articles.errorMessage,
         isSignedIn: state.auth.isSignedIn,
         isLoading: state.articles.fetchingArticles || state.articles.fetchingMyArticles,
