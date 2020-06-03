@@ -7,9 +7,10 @@ class CreateArticle extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            title: null,
-            description: null,
-            body: null,
+            title: '',
+            description: '',
+            body: '',
+            tag: '',
             taglist: []
         }
     }
@@ -19,22 +20,22 @@ class CreateArticle extends React.Component {
     }
     handleChange = (event) => {
         const {name, value} = event.target;
-        if(name === 'taglist') {
+        if(name === 'tag') {
             const values = value.split(' ');
-            this.setState({[name]: values});
+            this.setState({taglist: values, tag: value});
         } else {
             this.setState({[name]: value});
         }
-        
     }
 
     onSubmit = (event) => {
         event.preventDefault();
         console.log(this.state);
-        this.props.createArticle(this.state)
+        this.props.createArticle(this.state);
+        this.setState({description: '', title: '',body: '', taglist:[] , tag: ''});
     }
 
-    checkSubmitting() {
+    checkSubmitting=()=> {
         if(this.props.creatingArticle){
             return (
                 <p className="text-center">Submitting Form....</p>
@@ -61,19 +62,19 @@ class CreateArticle extends React.Component {
                     {creatingFlag}
                     <form className="ui form" onSubmit={this.onSubmit}>
                         <div className="field">
-                            <input name= 'title' placeholder="Article Title" onBlur={this.handleChange}/>
+                            <input name= 'title' value={this.state.title} type="text" placeholder="Article Title" onChange={this.handleChange} required/>
                         </div>
                         <div className="field">
-                            <input name="description" placeholder="What's this article about?" onBlur={this.handleChange} />
+                            <input name="description" value={this.state.description}  type="text" placeholder="What's this article about?" onChange={this.handleChange} required/>
                         </div>
                         <div className="field">
-                            <textarea name="body" placeholder="Write Your Article (In Markdown)" onBlur={this.handleChange} />
+                            <textarea name="body" value={this.state.body}   type="text" placeholder="Write Your Article (In Markdown)" onChange={this.handleChange} required />
                         </div>
                         <div className="field">
-                            <input name="taglist" placeholder="Enter tags" onBlur={this.handleChange}/>
+                            <input name="tag" value={this.state.tag}  type="text"  placeholder="Enter tags" onChange={this.handleChange}/>
                         </div>
                         <div className="field">
-                            <button className="ui right floated green button">Publish Article</button>
+                            <button type="submit" className="ui right floated green button">Publish Article</button>
                         </div>
                     </form>
                 </div>
