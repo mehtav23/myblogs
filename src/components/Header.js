@@ -18,7 +18,7 @@ class Header extends React.Component {
             return (
                 <React.Fragment>
                     <Link to='/articles/new' className="item"><i className="edit outline icon"></i>New Article</Link>
-                    <Link to='/userprofile' className="item"><i className="user icon"></i>{this.props.userName.user.username}</Link>
+                    <Link to='' className="item"><i className="user icon"></i>{this.props.userName.user.username}</Link>
                     <Link to='' className="item" onClick={this.signOut}>Sign Out</Link>
                 </React.Fragment>
             );

@@ -69,6 +69,7 @@ class ArticleList extends React.Component {
     }
     handlePageChange = (event, data) => {
         console.log(event, data);
+        this.setState({activePage: data.activePage});
         const offset = (data.activePage-1)*10;
         if(this.state.globalFeed) {
             this.props.fetchArticles(offset);
@@ -81,6 +82,7 @@ class ArticleList extends React.Component {
         const articles = this.state.globalFeed ? this.props.feedArticles: this.props.myArticles;
         const blankSection = this.handleBlankSection(articles);
         const activePage = this.state.activePage;
+        console.log('activePage',activePage);
         let totalCount = this.state.globalFeed? this.props.feedArticlesCount: this.props.myArticlesCount;
         totalCount = totalCount/10?totalCount/10:1;
         const rows = articles.map(article =>{
