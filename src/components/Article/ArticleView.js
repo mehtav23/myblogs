@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { fetchArticleBySlug, addCommentToArticle, clearFetchingComments,
          clearAddingComment, deleteComment, deleteArticle } from '../../actions';
 
+import createBrowserHistory from '../../history';
+
 class ArticleView extends React.Component {
 
     constructor(props) {
@@ -29,13 +31,17 @@ class ArticleView extends React.Component {
         this.props.deleteArticle(articleId);
 
     }
+    handleEditArticle = ()=> {
+        const articleId = this.state.slug;
+        createBrowserHistory.push(`/articles/edit/${articleId}`);
+    }
     displayButton = (articleUser) => {
         if(this.props.user){
             const {user} = this.props.user;
             if(articleUser === user.username) {
                 return (
                     <ul className="ui floated left article-taglist-ul">
-                        <li className="article-taglist-li success">
+                        <li className="article-taglist-li success" onClick={this.handleEditArticle}>
                             <i className="edit icon"></i>&nbsp; Edit Article
                         </li>
                         <li className="article-taglist-li danger" onClick={this.deleteArticle}>

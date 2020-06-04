@@ -7,7 +7,9 @@ import { FETCHING_ARTICLES, FETCHING_ARTICLES_SUCCESS, FETCHING_ARTICLES_FAILED,
         FETCHING_COMMENT_OF_ARTICLE, FETCHING_COMMENT_OF_ARTICLE_SUCCESS, FETCHING_COMMENT_OF_ARTICLE_FAILED,
         CLEAR_FETCHING_COMMENT_OF_ARTICLE, DELETING_COMMENT, DELETING_COMMENT_SUCCESS, DELETING_COMMENT_FAILED,
         CLEAR_DELETING_COMMENT, DELETING_ARTICLE, DELETING_ARTICLE_SUCCESS, DELETING_ARTICLE_FAILED,
-        CLEAR_DELETING_ARTICLE} from './types';
+        CLEAR_DELETING_ARTICLE, FETCHING_ARTICLE_DETAILS_FOR_EDIT, FETCHING_ARTICLE_DETAILS_FOR_EDIT_SUCCESS,
+        FETCHING_ARTICLE_DETAILS_FOR_EDIT_FAILED, CLEAR_FETCHING_FOR_EDIT, UPDATING_ARTICLE, UPDATING_ARTICLE_SUCCESS,
+        UPDATING_ARTICLE_FAILED, CLEAR_UPDATING_ARTICLE} from './types';
 
 import axios from '../apis';
 import getAuthHeader from './headerToken';
@@ -60,7 +62,7 @@ export const createArticle = (formValues) => {
             const headers = getAuthHeader();
             const article = formValues;
             const response = await axios.post('/articles', {article: article}, {headers: headers});
-            console.log(response.data);
+            console.log('createdArticle',response.data);
             dispatch({type: CREATING_ARTICLE_SUCCESS, payload: response.data});
         } catch(error) {
             console.log(error);
@@ -191,5 +193,52 @@ export const deleteArticle = (slug)=> {
 export const clearDeletingArticle = () => {
     return {
         type: CLEAR_DELETING_ARTICLE
+    }
+}
+
+
+export const fetchArticleForEdit = (slug) => {
+    return async (dispatch) => {
+        try {
+            dispatch({type: FETCHING_ARTICLE_DETAILS_FOR_EDIT});
+            const response = await axios.get(`/articles/${slug}`);
+            console.log('Article Fetched', response.data);
+            dispatch({type: FETCHING_ARTICLE_DETAILS_FOR_EDIT_SUCCESS, payload: response.data});
+        } catch(error) {
+            console.log('error occured', error);
+            const [key, errorStatement] = Object.entries(error.response.data.errors)[0];
+            dispatch({type: FETCHING_ARTICLE_DETAILS_FOR_EDIT_FAILED, payload: key+ ' '+ errorStatement});
+        }
+    }
+}
+
+export const clearFetchingForEdit = ()=>{
+    return {
+        type: CLEAR_FETCHING_FOR_EDIT
+    }
+}
+
+
+export const updateArticle = (formValues) => {
+    return async (dispatch) => {
+        dispatch({type: UPDATING_ARTICLE});
+        const {slug, title, description, body,tagList} = formValues;
+        const payload = {title,description, body, tagList};
+        const headers = getAuthHeader();
+        try{
+            const response = await axios.put(`/articles/${slug}`, {article: payload}, {headers: headers});
+            console.log('response', response.data);
+            dispatch({type:UPDATING_ARTICLE_SUCCESS, payload: response.data});
+            setTimeout(() => {
+                dispatch({type:CLEAR_UPDATING_ARTICLE});
+            }, 3000);
+        }catch(error){
+            console.log('error occured', error);
+            const [key, errorStatement] = Object.entries(error.response.data.errors)[0];
+            dispatch({type:UPDATING_ARTICLE_FAILED, payload: key+ ' '+ errorStatement});
+            setTimeout(() => {
+                dispatch({type:CLEAR_UPDATING_ARTICLE});
+            }, 3000);
+        }
     }
 }

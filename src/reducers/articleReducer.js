@@ -7,7 +7,9 @@ import { FETCHING_ARTICLES, FETCHING_ARTICLES_SUCCESS, FETCHING_ARTICLES_FAILED,
          FETCHING_COMMENT_OF_ARTICLE, FETCHING_COMMENT_OF_ARTICLE_SUCCESS, FETCHING_COMMENT_OF_ARTICLE_FAILED,
          CLEAR_FETCHING_COMMENT_OF_ARTICLE, DELETING_COMMENT, DELETING_COMMENT_SUCCESS, DELETING_COMMENT_FAILED,
          CLEAR_DELETING_COMMENT,  DELETING_ARTICLE, DELETING_ARTICLE_SUCCESS, DELETING_ARTICLE_FAILED,
-         CLEAR_DELETING_ARTICLE } from '../actions/types';
+         CLEAR_DELETING_ARTICLE, FETCHING_ARTICLE_DETAILS_FOR_EDIT, FETCHING_ARTICLE_DETAILS_FOR_EDIT_SUCCESS,
+         FETCHING_ARTICLE_DETAILS_FOR_EDIT_FAILED, CLEAR_FETCHING_FOR_EDIT, UPDATING_ARTICLE, UPDATING_ARTICLE_SUCCESS, CLEAR_UPDATING_ARTICLE,
+        UPDATING_ARTICLE_FAILED } from '../actions/types';
 
 const initialState = {
     feedArticles: [],
@@ -42,8 +44,19 @@ const initialState = {
 
     deletingArticle: false,
     deletingArticleSuccessfully: false,
-    deletingArticleFailed: false
+    deletingArticleFailed: false,
 
+    fetchingArticleDetailsForEdit: false,
+    fetchingArticleDetailsForEditSuccessfully: false,
+    fetchingArticleDetailsForEditFailed: false,
+    fetchedArticleDetailsForEdit: [],
+
+
+    updatingArticle: false,
+    updatingArticleSuccess: false,
+    updatingArticleFailed: false,
+    updatingArticleError: null,
+    updatedArticleResult: null,
 };
 
 
@@ -118,6 +131,26 @@ export default (state = initialState, action) =>{
             return {...state, deletingArticle:false, deletingArticleSuccessfully:false, deletingArticleFailed:true}
         case CLEAR_DELETING_ARTICLE:
             return {...state, deletingArticle:false, deletingArticleSuccessfully:false, deletingArticleFailed:false}
+        case FETCHING_ARTICLE_DETAILS_FOR_EDIT:
+            return {...state, fetchingArticleDetailsForEdit:true,fetchingArticleDetailsForEditSuccessfully: false,
+                            fetchingArticleDetailsForEditFailed: false, fetchedArticleDetailsForEdit: []};
+        case FETCHING_ARTICLE_DETAILS_FOR_EDIT_SUCCESS:
+            return {...state, fetchingArticleDetailsForEdit:false, fetchingArticleDetailsForEditSuccessfully: true,
+                fetchingArticleDetailsForEditFailed: false, fetchedArticleDetailsForEdit: action.payload};
+        case FETCHING_ARTICLE_DETAILS_FOR_EDIT_FAILED:
+            return {...state, fetchingArticleDetailsForEdit:false, fetchingArticleDetailsForEditSuccessfully: false,
+                    fetchingArticleDetailsForEditFailed: true, fetchedArticleDetailsForEdit: []};
+        case CLEAR_FETCHING_FOR_EDIT:
+            return {...state, fetchingArticleDetailsForEdit:false, fetchingArticleDetailsForEditSuccessfully: false,
+                fetchingArticleDetailsForEditFailed: false, fetchedArticleDetailsForEdit: []};
+        case UPDATING_ARTICLE: 
+            return {...state, updatingArticle: true, updatingArticleSuccess:false, updatingArticleFailed:false, updatedArticleResult: null, updatingArticleError:null};
+        case UPDATING_ARTICLE_SUCCESS: 
+            return {...state, updatingArticle: false, updatingArticleSuccess:true, updatingArticleFailed:false, updatedArticleResult: action.payload, updatingArticleError: null};
+        case UPDATING_ARTICLE_FAILED:
+            return {...state, updatingArticle: false, updatingArticleSuccess:false, updatingArticleFailed:true, updatedArticleResult: null, updatingArticleError:action.payload};
+        case CLEAR_UPDATING_ARTICLE: 
+            return {...state, updatingArticle: false, updatingArticleSuccess:false, updatingArticleFailed:false, updatedArticleResult: null, updatingArticleError:null};
         default:
             return state;
     }

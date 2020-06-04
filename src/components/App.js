@@ -27,7 +27,6 @@ class App extends React.Component {
                     <Route path="/" exact component= {ArticleList} />
                     <Route path="/articles/new/" exact component= {CreateArticle} /> 
                     <Route path="/articles/edit/:id" exact component= {ArticleEdit} /> 
-                    {/* <Route path="/article/delete/:id" exact component= {ArticleDelete} />  */}
                     <Route path="/articles/:id" exact component= {ArticleView} />
                     <Route path="/Signin/" exact component= {SignIn} />
                     <Route path="/Signup/" exact component= {SignUp} /> 
