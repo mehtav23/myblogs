@@ -36,6 +36,7 @@ const initialState = {
     fetchingCommentsOfArticleSuccess: false,
     fetchingCommentsOfArticleFailed: false,
     fetchedCommentofArticle: null,
+    fetchingCommentErrors:null,
 
     deletingComment: false,
     deletingCommentSuccessfully: false,
@@ -104,16 +105,16 @@ export default (state = initialState, action) =>{
             return {...state, addingCommentToArticle:false, addedCommentToArticle:false, failedAddingCommentToArticle:false};
         case FETCHING_COMMENT_OF_ARTICLE: 
             return {...state, fetchingCommentOfArticle: true, fetchingCommentsOfArticleSuccess:false, fetchingCommentsOfArticleFailed:false,
-                fetchedCommentofArticle: null};
+                fetchedCommentofArticle: null, fetchingCommentErrors:null};
         case FETCHING_COMMENT_OF_ARTICLE_SUCCESS: 
             return {...state, fetchingCommentOfArticle: false, fetchingCommentsOfArticleSuccess:true, fetchingCommentsOfArticleFailed:false,
-                fetchedCommentofArticle: action.payload};
+                fetchedCommentofArticle: action.payload, fetchingCommentErrors: null};
         case FETCHING_COMMENT_OF_ARTICLE_FAILED: 
             return {...state, fetchingCommentOfArticle: false, fetchingCommentsOfArticleSuccess:false, fetchingCommentsOfArticleFailed:true,
-                fetchedCommentofArticle: null};
+                fetchedCommentofArticle: null, fetchingCommentErrors: action.payload};
         case CLEAR_FETCHING_COMMENT_OF_ARTICLE:
             return {...state, fetchingCommentOfArticle: false, fetchingCommentsOfArticleSuccess:false, fetchingCommentsOfArticleFailed:false,
-                fetchedCommentofArticle: null};
+                fetchedCommentofArticle: null, fetchingCommentErrors: null};
 
         case DELETING_COMMENT:
             return  {...state, deletingComment: true, deletingCommentSuccessfully: false, deletingCommentFailed: false}

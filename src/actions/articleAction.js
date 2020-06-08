@@ -64,6 +64,9 @@ export const createArticle = (formValues) => {
             const response = await axios.post('/articles', {article: article}, {headers: headers});
             console.log('createdArticle',response.data);
             dispatch({type: CREATING_ARTICLE_SUCCESS, payload: response.data});
+            setTimeout(()=>{
+                dispatch(clearCreateArticleForm());
+            },3000)
         } catch(error) {
             console.log(error);
             dispatch({type: CREATING_ARTICLE_FAILED, payload: error});
@@ -112,7 +115,8 @@ export const addCommentToArticle = (slug, formValues) =>{
             dispatch(fetchCommentsOfArticle(slug));
         } catch(error) {
             console.log('Error occured while adding comment', error);
-            dispatch({type: ADDING_COMMENT_TO_ARTICLE_FAILED, payload:error});
+            const [key, errorStatement] = Object.entries(error.response.data.errors)[0];
+            dispatch({type: ADDING_COMMENT_TO_ARTICLE_FAILED, payload:key +' '+errorStatement});
         }
         
     }
@@ -130,11 +134,13 @@ export const fetchCommentsOfArticle = (slug) =>{
             const response = await axios.get(`/articles/${slug}/comments`);
             console.log('response of getting comment', response.data);
             dispatch({type: FETCHING_COMMENT_OF_ARTICLE_SUCCESS, payload:response.data});
-
-
         } catch(error) {
-            console.log('Error occured while adding comment', error);
-            dispatch({type: FETCHING_COMMENT_OF_ARTICLE_FAILED, payload:error});
+            console.log('Error occured while fetching comment', error);
+            const [key, errorStatement] = Object.entries(error.response.data.errors)[0];
+            dispatch({type: FETCHING_COMMENT_OF_ARTICLE_FAILED, payload:key + ' '+errorStatement});
+            setTimeout(()=>{
+                dispatch(clearFetchingComments());
+            },3000);
         }
         
     }
@@ -158,7 +164,7 @@ export const deleteComment = (slug, key) => {
             dispatch(fetchCommentsOfArticle(slug));
             setTimeout(()=>{
                 dispatch(clearDeletingComment());
-            },2000);
+            },3000);
         }catch(error) {
             console.log('Error while deleting comment', error);
             dispatch({type: DELETING_COMMENT_FAILED, payload: error});

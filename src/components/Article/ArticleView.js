@@ -103,6 +103,14 @@ class ArticleView extends React.Component {
                 </React.Fragment>
                     
             )
+        } else if(this.props.fetchingComments){
+            return (
+                <div className="text-center">Fetching comments....</div>
+            )
+        } else if(this.props.fetchingCommentsFailed) {
+            return (
+                <div className="text-center">Failed while fetching comments....</div>
+            )
         }
     }
 
@@ -241,7 +249,7 @@ const mapStateToProps = (state)=>{
         failedAddingCommentToArticle: state.articles.failedAddingCommentToArticle,
         fetchingComments: state.articles.fetchingCommentOfArticle,
         fetchingCommentsOfArticleSuccess: state.articles.fetchingCommentsOfArticleSuccess,
-        fetchingArticleFailed: state.articles.fetchingCommentsOfArticleFailed,
+        fetchingCommentsFailed: state.articles.fetchingCommentsOfArticleFailed,
         fetchedCommentofArticle: state.articles.fetchedCommentofArticle,
         deletingComment: state.articles.deleteComment,
         deletingCommentSuccessfully: state.articles.deletingCommentSuccessfully,

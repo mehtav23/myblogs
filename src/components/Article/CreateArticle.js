@@ -59,6 +59,10 @@ class CreateArticle extends React.Component {
             <div className="ui grid container">
                 <div className="two wide column"></div>
                 <div className="twelve wide column">
+                    <div className="text-center">
+                        <h1>New Article</h1>
+                    </div>
+                    <br/>
                     {creatingFlag}
                     <form className="ui form" onSubmit={this.onSubmit}>
                         <div className="field">
