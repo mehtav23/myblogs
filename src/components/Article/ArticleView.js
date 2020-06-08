@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { fetchArticleBySlug, addCommentToArticle, clearFetchingComments,
          clearAddingComment, deleteComment, deleteArticle } from '../../actions';
 
@@ -150,6 +151,13 @@ class ArticleView extends React.Component {
                         {this.handleDeleteCommentNotification()}
                         {this.renderComments()}
                     </div>
+                </div>
+            );
+        }
+        else {
+            return (
+                <div className="text-center">
+                    Kindly <Link to='/signin'>SignIn</Link>  or <Link to='/signup'>SignUp</Link> to read or write comments
                 </div>
             );
         }
