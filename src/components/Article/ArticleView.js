@@ -69,13 +69,13 @@ class ArticleView extends React.Component {
         }
     }
     renderComments=()=> {
-        console.log(this.props)
+        // console.log(this.props)
         if(this.props.fetchedCommentofArticle && this.props.fetchedCommentofArticle.comments &&
             this.props.fetchedCommentofArticle.comments.length>0){
             const {comments} = this.props.fetchedCommentofArticle;
             let user = this.props.user;
             const loggedInUsername = user ? user.user.username: null;
-            console.log(comments);
+            //console.log(comments);
             const comment = comments.map((comment)=>{
                 return (
                         <div className="comment  comment-border" key={comment.id}>
@@ -97,7 +97,7 @@ class ArticleView extends React.Component {
                         </div>
                 )
             });
-            console.log('comment',comment, 'comments', comments);
+            //console.log('comment',comment, 'comments', comments);
             return (
                 <React.Fragment>
                     {comment}
@@ -116,7 +116,6 @@ class ArticleView extends React.Component {
     }
 
     handleDeleteCommentNotification=()=> {
-        console.log('calling');
         if(this.props.deletingComment){
             return (
                 <div>Deleting Commment.....</div>
@@ -124,7 +123,7 @@ class ArticleView extends React.Component {
             
         } else if(this.props.deletingCommentSuccessfully){
             return (
-                <div>Deleting Successfully.....</div>
+                <div>Deleted Successfully.....</div>
             )
         }
         else if(this.props.deletingCommentFailed){
@@ -142,7 +141,7 @@ class ArticleView extends React.Component {
                     <div className="ui comments">
                         <form className="ui reply form">
                             <div className="field">
-                            <textarea name="comment" onBlur={this.handleChange}></textarea>
+                            <textarea name="comment" value={this.state.comment} onChange={this.handleChange}></textarea>
                             </div>
                             <div className="ui primary submit labeled icon button text-center" onClick={this.onSubmit}>
                                 <i className="icon edit"></i> Post Comment
@@ -235,6 +234,7 @@ class ArticleView extends React.Component {
         const {slug, comment}=  this.state;
         console.log(slug, comment);
         this.props.addCommentToArticle(slug, {body: comment});
+        this.setState({comment: ''});
     }
 
     render() {
